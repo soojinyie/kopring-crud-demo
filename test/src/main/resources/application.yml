@@ -1,5 +1,5 @@
 server:
-  port: 3000
+  port: 8080
   servlet:
     context-path: /
     encoding:
@@ -16,6 +16,7 @@ spring:
     hibernate:
       ddl-auto: update
       user-new-id-generator-mappings: false
+      dialect: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         show_sql: false
