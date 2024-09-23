@@ -1,0 +1,43 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./react-app-example
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"  # Nginx를 3000 포트에 매핑
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./test
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Spring Boot를 8080 포트에 매핑
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/test
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      SERVER_PORT: 8080  # 환경 변수로 서버 포트를 명시적으로 8080으로 설정
+
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432" #로컬에서 5433 포트를 사용하고, 컨테이너 내부에서는 여전히 5432 포트를 사용
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
