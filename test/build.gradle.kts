@@ -1,9 +1,10 @@
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
-	id("org.springframework.boot") version "3.3.3"
-	id("io.spring.dependency-management") version "1.1.6"
-	kotlin("plugin.jpa") version "1.9.25"
+	kotlin("jvm") version "1.9.22"
+	kotlin("plugin.spring") version "1.9.22"
+	id("org.springframework.boot") version "3.2.3"
+	id("io.spring.dependency-management") version "1.1.4"
+	kotlin("plugin.jpa") version "1.9.22"
+	id("co.uzzu.dotenv.gradle") version "2.0.0"
 }
 
 group = "com.example"
@@ -38,7 +39,8 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
-
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	implementation("org.postgresql:postgresql")
 }
 
 kotlin {
