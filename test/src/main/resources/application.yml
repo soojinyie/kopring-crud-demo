@@ -1,7 +1,6 @@
 server:
   port: 8080
   servlet:
-    context-path: /
     encoding:
       charset: UTF-8
       force: true
@@ -20,10 +19,21 @@ spring:
   hikari:
     connection-timeout: 20000
     maximum-pool-size: 5
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    log-request-details: true
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 logging:
   level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation: TRACE
+    com.example.test: DEBUG
+    org.hibernate: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    com.zaxxer.hikari: DEBUG
-    org.springframework.jdbc.datasource: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE

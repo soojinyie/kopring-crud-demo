@@ -2,26 +2,22 @@ package com.example.test
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.CommandLineRunner
-import org.springframework.context.annotation.Bean
-import javax.sql.DataSource
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+import org.springframework.context.ApplicationListener
+import org.springframework.context.event.ContextRefreshedEvent
+import org.slf4j.LoggerFactory
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @SpringBootApplication
-class TestApplication {
+class TestApplication : ApplicationListener<ContextRefreshedEvent> {
+    private val logger = LoggerFactory.getLogger(TestApplication::class.java)
 
-    @Autowired
-    lateinit var dataSource: DataSource
-
-    @Bean
-    fun init() = CommandLineRunner {
-        try {
-            val connection = dataSource.connection
-            println("Successfully connected to the database.")
-            connection.close()
-        } catch (e: Exception) {
-            println("Failed to connect to the database:")
-            e.printStackTrace()
+    override fun onApplicationEvent(event: ContextRefreshedEvent) {
+        val requestMappingHandlerMapping = event.applicationContext.getBean(RequestMappingHandlerMapping::class.java)
+        val map = requestMappingHandlerMapping.handlerMethods
+        map.forEach { (key, value) -> 
+            logger.info("Mapped \"${key}\" onto ${value.method}")
         }
     }
 }
