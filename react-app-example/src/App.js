@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
 
 function App() {
   const [id, setId] = useState('');
   const [eventName, setEventName] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted:', { id, eventName });
-    // 여기에 서버로 데이터를 보내는 로직을 추가할 수 있습니다.
+    try {
+      const response = await axios.post('/api/events', {
+        id: id,
+        eventName: eventName
+      });
+      console.log('Success:', response.data);
+      // 성공 후 폼 초기화
+      setId('');
+      setEventName('');
+      alert('이벤트가 성공적으로 생성되었습니다!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('이벤트 생성 중 오류가 발생했습니다.');
+    }
   };
 
   return (
